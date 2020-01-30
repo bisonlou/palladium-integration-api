@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-conn = pyodbc.connect(os.getenv('DATABASE_URI'))
+conn = pyodbc.connect(os.getenv("DATABASE_URI"))
 cursor = conn.cursor()
 
 
