@@ -9,6 +9,7 @@ from api.database import (
     get_gratuity_totals,
     get_advace_totals,
 )
+from api.utils import get_month_name
 
 
 @app.route("/", methods=['POST'])
@@ -28,12 +29,18 @@ def index():
         GOUSadvances = get_advace_totals("GOU", "Support", month, year)
 
         # Net donor wise
+        path = f'{os.path.join(APP_ROOT, "output")}/{get_month_name(month)} {year}'
+        is_file = os.path.isdir(path)
+
+        if not is_file:
+            os.mkdir(path)
+
         with open(
-            os.path.join(APP_ROOT, "output", "NetPay.txt"), "w"
+            os.path.join(path, "NetPay.txt"), "w"
         ) as net_file:
 
             net_file.write(
-                journal_date + ',"7","PAYE For December ' + str(year) + '"\n'
+                f'{journal_date} ,"7", Net Pay For {get_month_name(month)} {year} \n'
             )
 
             # GOU Support NET
@@ -45,11 +52,11 @@ def index():
             net_file.write("24000005," + str(GOUR[0][0]))
 
         with open(
-            os.path.join(APP_ROOT, "output", "PAYE.txt"), "w"
+            os.path.join(path, "PAYE.txt"), "w"
         ) as paye_file:
 
             paye_file.write(
-                journal_date + ',"7","PAYE For December ' + str(year) + '"\n'
+                f'{journal_date} ,"7", PAYE For {get_month_name(month)} {year} \n'
             )
 
             # GOU Support PAYE
@@ -61,11 +68,11 @@ def index():
             paye_file.write("20000005," + str(GOUR[0][3]))
 
         with open(
-            os.path.join(APP_ROOT, "output", "NSSF.txt"), "w"
+            os.path.join(path, "NSSF.txt"), "w"
         ) as nssf_file:
 
             nssf_file.write(
-                journal_date + ',"7","NSSF For December ' + str(year) + '"\n'
+                f'{journal_date} ,"7", NSSF For {get_month_name(month)} {year} \n'
             )
 
             # GOU Support NSSF 10%
@@ -85,11 +92,11 @@ def index():
             nssf_file.write("20000007," + str(GOUR[0][2]))
 
         with open(
-            os.path.join(APP_ROOT, "output", "LST.txt"), "w"
+            os.path.join(path, "LST.txt"), "w"
         ) as lst_file:
 
             lst_file.write(
-                journal_date + ',"7","LST For December ' + str(year) + '"\n'
+                f'{journal_date} ,"7", LST For {get_month_name(month)} {year} \n'
             )
 
             # GOU Support LST
@@ -101,11 +108,11 @@ def index():
             lst_file.write("20000005," + str(GOUR[0][4]))
 
         with open(
-            os.path.join(APP_ROOT, "output", "Gratuity.txt"), "w"
+            os.path.join(path, "Gratuity.txt"), "w"
         ) as gratuity_file:
 
             gratuity_file.write(
-                journal_date + ',"7","Gratuity For December ' + str(year) + '"\n'
+                f'{journal_date} ,"7", Gratuity For {get_month_name(month)} {year} \n'
             )
 
             # Gratuity
@@ -113,11 +120,11 @@ def index():
             gratuity_file.write("24000010," + str(gratuity[0][0]))
 
         with open(
-            os.path.join(APP_ROOT, "output", "Advances.txt"), "w"
+            os.path.join(path, "Advances.txt"), "w"
         ) as advances_file:
 
             advances_file.write(
-                journal_date + ',"7","Gratuity For December ' + str(year) + '"\n'
+                f'{journal_date} ,"7", Advances For {get_month_name(month)} {year} \n'
             )
 
             # individual GOU Support advances
@@ -142,10 +149,9 @@ def index():
         print(sys.exc_info())
 
     try:
-        print(APP_ROOT)
+        return jsonify({
+            'success': True
+        })
 
-        send_from_directory(
-            APP_ROOT, filename="output/LST.txt", as_attachment=True
-        )
     except FileNotFoundError:
         abort(400)
