@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "c:\\Users\\User\\Documents\\Python\\Flask\\palladium-integration-api\\venv\\Scripts\\python.exe",
+    "python.pythonPath": "C:\\Users\\bison\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
     "python.linting.pylintEnabled": false,
     "python.linting.pycodestyleEnabled": true,
     "python.linting.enabled": true
