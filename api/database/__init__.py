@@ -1,9 +1,10 @@
 import os
 import pyodbc
+from dotenv import load_dotenv
 
+load_dotenv()
 
-conn = pyodbc.connect(os.environ["DATABASE_URI"])
-print(conn)
+conn = pyodbc.connect(os.getenv("DATABASE_URI"))
 cursor = conn.cursor()
 
 
