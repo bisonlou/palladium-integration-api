@@ -1,4 +1,3 @@
-
 from api import app
 from os import environ
 from werkzeug.serving import run_simple
