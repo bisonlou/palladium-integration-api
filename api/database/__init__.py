@@ -66,3 +66,10 @@ def get_advace_totals(donor, department, month, year):
     cursor.execute(query, (donor, department, month, year))
 
     return cursor.fetchall()
+
+
+def get_transaction_years():
+    query = "select To_Date FROM Company_Transaction"""
+    cursor.execute(query)
+
+    return cursor.fetchall()

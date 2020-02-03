@@ -8,9 +8,26 @@ from api.database import (
     get_department_totals,
     get_gratuity_totals,
     get_advace_totals,
+    get_transaction_years,
 )
 from api.utils import get_month_name
 
+@app.route("/years")
+def get_years():
+    try:
+        years = get_transaction_years()
+        trans_years = []
+
+        for year in years:
+            trans_years.append(year[0])
+
+    except Exception:
+        print(sys.exc_info())
+
+    return jsonify({
+        'success': True,
+        'data': [trans_year.year for trans_year in trans_years]
+    })
 
 @app.route("/", methods=['POST'])
 def index():
