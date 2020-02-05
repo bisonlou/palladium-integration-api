@@ -1,8 +1,22 @@
+import os
 from flask import Flask
-from api.database import cursor
 from flask_cors import CORS
+from dotenv import load_dotenv
+from api.database import create_db
+from api.database.finance_services import cursor
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
-import api.controllers.journal
+database_path = os.getenv("POSTGRES_DATABASE_URL")
+create_db(app, database_path)
+
+from api.controllers.journal import journal_module
+from api.controllers.users import user_module
+from api.controllers.errors import errorhandler
+
+errorhandler(app)
+journal_module(app)
+user_module(app)
