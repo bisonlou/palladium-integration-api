@@ -46,7 +46,7 @@ def user_module(app):
                 jsonify(
                     {
                         "success": False,
-                        "message": "User with that email already registered",
+                        "description": "User with that email already registered",
                     }
                 ),
                 422,
@@ -64,13 +64,26 @@ def user_module(app):
                 password=hashed_password,
             )
 
-            User.add(new_user)
+            user = User.add(new_user)
         except Exception:
             print(sys.exc_info())
             error = True
 
         if not error:
-            return jsonify({"success": True, "data": new_user.format_long()})
+            token = jwt.encode(
+                {"id": user.id}, os.getenv("SECRET"), algorithm="HS256"
+            )
+
+            return (
+                jsonify(
+                    {
+                        "success": True,
+                        "access_token": token.decode("utf-8"),
+                        "user": user.format_long(),
+                    }
+                ),
+                200,
+            )
 
         abort(422)
 
@@ -91,7 +104,11 @@ def user_module(app):
 
             return (
                 jsonify(
-                    {"success": True, "access_token": token.decode("utf-8")}
+                    {
+                        "success": True,
+                        "access_token": token.decode("utf-8"),
+                        "user": user.format_long(),
+                    }
                 ),
                 200,
             )
