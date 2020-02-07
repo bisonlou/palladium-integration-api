@@ -16,6 +16,20 @@ def errorhandler(app):
             404,
         )
 
+    @app.errorhandler(422)
+    def unprocessable(error):
+        return (
+            jsonify(
+                {
+                    "success": False,
+                    "message": "request unprocessable",
+                    "error": 422,
+                    "description": error.description,
+                }
+            ),
+            422,
+        )
+
     @app.errorhandler(400)
     def bad_request(error):
         return (
