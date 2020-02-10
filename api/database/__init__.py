@@ -9,6 +9,7 @@ load_dotenv()
 db = SQLAlchemy()
 
 import api.models.user
+import api.models.stationery
 
 
 def create_db(app, database_uri):
