@@ -114,7 +114,7 @@ def journal_module(app):
 
                 # GOU Support LST
                 lst_file.write("93000003," + str(-GOUS[0][4]) + "\n")
-                lst_file.write("20000005," + str(GOUS[0][4]) + "\n")
+                lst_file.write("24000005," + str(GOUS[0][4]) + "\n")
 
                 # GOU Research LST
                 lst_file.write("93000003," + str(-GOUR[0][4]) + "\n")
