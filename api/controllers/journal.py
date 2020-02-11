@@ -143,18 +143,18 @@ def journal_module(app):
                 # individual GOU Support advances
                 GOUSadvances_total = 0
                 for advance in GOUSadvances:
-                    advances_file.write("94000000," + str(-advance[1]) + "\n")
+                    advances_file.write(f"{advance[0]},{-advance[1]} \n")
                     GOUSadvances_total += advance[1]
 
                 # print GOU Support total
                 advances_file.write(
-                    "24000010," + str(GOUSadvances_total) + "\n"
+                    "24000000," + str(GOUSadvances_total) + "\n"
                 )
 
                 # individual GOU Research advances
                 GOURadvances_total = 0
                 for advance in GOURadvances:
-                    advances_file.write("94000000," + str(-advance[1]) + "\n")
+                    advances_file.write(f"{advance[0]},{-advance[1]} \n")
                     GOURadvances_total += advance[1]
 
                 # print GOU Research total
