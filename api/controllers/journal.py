@@ -41,6 +41,7 @@ def journal_module(app):
         year = request.json.get("year", None)
         journal_date = request.json.get("journal_date", None)
 
+
         try:
             GOUS = get_department_totals("GOU", "Support", month, year)
             GOUR = get_department_totals("GOU", "Research", month, year)
@@ -58,7 +59,7 @@ def journal_module(app):
             with open(os.path.join(path, "NetPay.txt"), "w") as net_file:
 
                 net_file.write(
-                    f'{journal_date} ,"7", Net Pay For {get_month_name(month)} {year} \n'
+                    f'{journal_date} ,"7", "Net Pay For {get_month_name(month)} {year} "\n'
                 )
 
                 # GOU Support NET
@@ -72,7 +73,7 @@ def journal_module(app):
             with open(os.path.join(path, "PAYE.txt"), "w") as paye_file:
 
                 paye_file.write(
-                    f'{journal_date} ,"7", PAYE For {get_month_name(month)} {year} \n'
+                    f'{journal_date} ,"7", "PAYE For {get_month_name(month)} {year} "\n'
                 )
 
                 # GOU Support PAYE
@@ -86,7 +87,7 @@ def journal_module(app):
             with open(os.path.join(path, "NSSF.txt"), "w") as nssf_file:
 
                 nssf_file.write(
-                    f'{journal_date} ,"7", NSSF For {get_month_name(month)} {year} \n'
+                    f'{journal_date} ,"7", "NSSF For {get_month_name(month)} {year} "\n'
                 )
 
                 # GOU Support NSSF 10%
@@ -108,7 +109,7 @@ def journal_module(app):
             with open(os.path.join(path, "LST.txt"), "w") as lst_file:
 
                 lst_file.write(
-                    f'{journal_date} ,"7", LST For {get_month_name(month)} {year} \n'
+                    f'{journal_date} ,"7", "LST For {get_month_name(month)} {year} "\n'
                 )
 
                 # GOU Support LST
@@ -124,7 +125,7 @@ def journal_module(app):
             ) as gratuity_file:
 
                 gratuity_file.write(
-                    f'{journal_date} ,"7", Gratuity For {get_month_name(month)} {year} \n'
+                    f'{journal_date} ,"7", "Gratuity For {get_month_name(month)} {year} "\n'
                 )
 
                 # Gratuity
@@ -136,7 +137,7 @@ def journal_module(app):
             ) as advances_file:
 
                 advances_file.write(
-                    f'{journal_date} ,"7", Advances For {get_month_name(month)} {year} \n'
+                    f'{journal_date} ,"7", "Advances For {get_month_name(month)} {year} "\n'
                 )
 
                 # individual GOU Support advances
