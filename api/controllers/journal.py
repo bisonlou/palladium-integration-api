@@ -148,7 +148,7 @@ def journal_module(app):
 
                 # print GOU Support total
                 advances_file.write(
-                    "24000000," + str(GOUSadvances_total) + "\n"
+                    "24000005," + str(GOUSadvances_total) + "\n"
                 )
 
                 # individual GOU Research advances
@@ -158,7 +158,7 @@ def journal_module(app):
                     GOURadvances_total += advance[1]
 
                 # print GOU Research total
-                advances_file.write("24000010," + str(GOURadvances_total))
+                advances_file.write("20000005," + str(GOURadvances_total))
 
         except Exception:
             print(sys.exc_info())
