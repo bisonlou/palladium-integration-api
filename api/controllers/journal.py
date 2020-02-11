@@ -82,7 +82,7 @@ def journal_module(app):
 
                 # GOU Research PAYE
                 paye_file.write("93000001," + str(-GOUR[0][3]) + "\n")
-                paye_file.write("20000005," + str(GOUR[0][3]))
+                paye_file.write("24000005," + str(GOUR[0][3]))
 
             with open(os.path.join(path, "NSSF.txt"), "w") as nssf_file:
 
