@@ -16,7 +16,9 @@ create_db(app, database_path)
 from api.controllers.journal import journal_module
 from api.controllers.users import user_module
 from api.controllers.errors import errorhandler
+from api.controllers.stationery import stationery_module
 
 errorhandler(app)
 journal_module(app)
 user_module(app)
+stationery_module(app)

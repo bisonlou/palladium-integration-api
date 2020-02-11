@@ -78,11 +78,11 @@ def journal_module(app):
 
                 # GOU Support PAYE
                 paye_file.write("93000001," + str(-GOUS[0][3]) + "\n")
-                paye_file.write("20000005," + str(GOUS[0][3]) + "\n")
+                paye_file.write("24000005," + str(GOUS[0][3]) + "\n")
 
                 # GOU Research PAYE
                 paye_file.write("93000001," + str(-GOUR[0][3]) + "\n")
-                paye_file.write("24000005," + str(GOUR[0][3]))
+                paye_file.write("20000005," + str(GOUR[0][3]))
 
             with open(os.path.join(path, "NSSF.txt"), "w") as nssf_file:
 
@@ -92,11 +92,11 @@ def journal_module(app):
 
                 # GOU Support NSSF 10%
                 nssf_file.write("93000002," + str(-GOUS[0][1]) + "\n")
-                nssf_file.write("20000005," + str(GOUS[0][1]) + "\n")
+                nssf_file.write("24000005," + str(GOUS[0][1]) + "\n")
 
                 # GOU Support NSSF 5%
                 nssf_file.write("93000002," + str(-GOUS[0][2]) + "\n")
-                nssf_file.write("20000007," + str(GOUS[0][2]) + "\n")
+                nssf_file.write("24000007," + str(GOUS[0][2]) + "\n")
 
                 # GOU Research NSSF 10%
                 nssf_file.write("93000002," + str(-GOUR[0][1]) + "\n")
