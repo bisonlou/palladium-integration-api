@@ -10,6 +10,7 @@ class User(db.Model):
     middle_name = db.Column(db.String, nullable=True)
     last_name = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
+    requisitions = db.relationship("StationeryRequisition", backref="user")
 
     def format_long(self):
         return {

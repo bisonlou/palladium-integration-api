@@ -41,7 +41,6 @@ def journal_module(app):
         year = request.json.get("year", None)
         journal_date = request.json.get("journal_date", None)
 
-
         try:
             GOUS = get_department_totals("GOU", "Support", month, year)
             GOUR = get_department_totals("GOU", "Research", month, year)

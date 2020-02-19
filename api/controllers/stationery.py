@@ -33,9 +33,12 @@ def stationery_module(app):
         item = Stationery.query.filter(Stationery.name == name).all()
 
         if item:
-            return jsonify(
-                {"success": False, "description": "item already exists"}
-            ), 400
+            return (
+                jsonify(
+                    {"success": False, "description": "item already exists"}
+                ),
+                400,
+            )
 
         item = Stationery(name=name, description=description)
 
