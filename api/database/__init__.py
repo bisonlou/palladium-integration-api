@@ -10,6 +10,7 @@ db = SQLAlchemy()
 
 import api.models.user
 import api.models.stationery
+import api.models.project
 
 
 def create_db(app, database_uri):

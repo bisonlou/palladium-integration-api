@@ -5,6 +5,7 @@ from api.models.stationery import (
     StationeryRequisition,
     StationeryRequisitionDetails,
 )
+from api.database import db
 
 
 def stationery_module(app):
@@ -45,12 +46,40 @@ def stationery_module(app):
         error = False
         try:
             new_item = item.add()
+            db.session.commit()
         except Exception:
             error = True
             print(exc_info())
 
         if not error:
             return jsonify({"success": True, "data": new_item.format_long()})
+
+    @app.route("/stationery_uploads", methods=["POST"])
+    def bulk_item_upload():
+        items = request.json.get("items", None)
+
+        stationery = []
+        for item in items:
+            name = item["name"]
+            description = item["description"]
+
+            if not Stationery.query.filter(Stationery.name == name).first():
+                stationery.append(
+                    Stationery(name=name, description=description)
+                )
+
+        error = False
+        try:
+            for item in stationery:
+                item.add()
+
+            db.session.commit()
+        except Exception:
+            error = True
+            print(exc_info())
+
+        if not error:
+            return jsonify({"success": True, "data": len(stationery)})
 
     @app.route("/stationery/<int:item_id>", methods=["PUT"])
     def update_item(item_id):

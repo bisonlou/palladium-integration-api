@@ -20,9 +20,11 @@ from api.controllers.stationery import stationery_module
 from api.controllers.stationery_requisition import (
     stationery_requisition_module,
 )
+from api.controllers.projects import project_module
 
 user_module(app)
 errorhandler(app)
 journal_module(app)
 stationery_module(app)
 stationery_requisition_module(app)
+project_module(app)
