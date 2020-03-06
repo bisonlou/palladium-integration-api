@@ -33,6 +33,7 @@ def project_module(app):
         contact_person_name = request.json.get("contact_person_name", None)
         contact_person_title = request.json.get("contact_person_title", None)
         contact_person_tel = request.json.get("contact_person_tel", None)
+        consultant_months = request.json.get("consultant_months", None)
         start_date = request.json.get("start_date", None)
         end_date = request.json.get("end_date", None)
         contract_value = request.json.get("contract_value", None)
@@ -41,6 +42,7 @@ def project_module(app):
         project_description = request.json.get("project_description", None)
         service_description = request.json.get("service_description", None)
         associate_consultants = request.json.get("associate_consultants", None)
+        remarks = request.json.get("remarks", None)
 
         project = Project.query.filter(Project.project_name == project_name).all()
 
@@ -57,6 +59,7 @@ def project_module(app):
             contact_person_name=contact_person_name,
             contact_person_title=contact_person_title,
             contact_person_tel=contact_person_tel,
+            consultant_months=consultant_months,
             start_date=start_date,
             end_date=end_date,
             contract_value=contract_value,
@@ -64,6 +67,7 @@ def project_module(app):
             project_description=project_description,
             service_description=service_description,
             senior_proffesional=senior_proffesional,
+            remarks=remarks
         )
 
         for consultant in associate_consultants:
@@ -101,6 +105,7 @@ def project_module(app):
         project_description = request.json.get("project_description", None)
         service_description = request.json.get("service_description", None)
         associate_consultants = request.json.get("associate_consultants", None)
+        remarks = request.json.get("remarks", None)
 
         project = Project.query.get(project_id)
 
@@ -113,6 +118,7 @@ def project_module(app):
         project.contact_person_name = contact_person_name
         project.contact_person_title = contact_person_title
         project.contact_person_tel = contact_person_tel
+        project.consultant_months = consultant_months
         project.start_date = start_date
         project.end_date = end_date
         project.contract_value = contract_value
@@ -120,6 +126,7 @@ def project_module(app):
         project.project_description = project_description
         project.service_description = service_description
         project.senior_proffesional = senior_proffesional
+        project.remarks = remarks
 
         for consultant in project.associate_consultants:
             consultant.delete()
@@ -152,6 +159,7 @@ def project_module(app):
         error = False
         try:
             project.delete()
+            project.save()
         except Exception:
             error = True
             print(exc_info())

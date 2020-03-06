@@ -20,6 +20,7 @@ class Project(db.Model):
     senior_proffesional = db.Column(db.String, nullable=True)
     project_description = db.Column(db.String, nullable=True)
     service_description = db.Column(db.String, nullable=True)
+    remarks = db.Column(db.String, nullable=True)
 
     associate_consultants = db.relationship(
         "AssociateConsultant",
@@ -45,6 +46,7 @@ class Project(db.Model):
             "senior_proffesional": self.senior_proffesional,
             "project_description": self.project_description,
             "service_description": self.service_description,
+            "remarks": self.remarks,
             "associate_consultants": [consultant.format_long() for consultant in self.associate_consultants]
         }
 
