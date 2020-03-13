@@ -1,8 +1,7 @@
 import os
 import sys
 from settings import APP_ROOT
-from flask import jsonify, abort, request
-from flask import send_from_directory, abort
+from flask import jsonify, abort, request, send_from_directory
 from api.database.finance_services import (
     get_department_totals,
     get_gratuity_totals,

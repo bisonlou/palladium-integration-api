@@ -1,13 +1,22 @@
 import os
 import sys
 import pyodbc
-from dotenv import load_dotenv
-
-load_dotenv()
-
+import subprocess
 
 try:
-    conn = pyodbc.connect(os.getenv("DATABASE_URI"))
+    s = subprocess.Popen('find / -name *odbc.so -type f', stdout=subprocess.PIPE, shell=True).communicate()
+    f, _ = s
+
+    # You can change this particular loop to select whatever driver you prefer
+    print(f.decode().split())
+    
+    username = os.environ.get("USERNAME")
+    server = os.environ.get("SERVER")
+    database = os.environ.get("DATABASE")
+    password = os.environ.get("PASSWORD")
+
+
+    conn =pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
     cursor = conn.cursor()
 except Exception:
     print(sys.exc_info())
@@ -41,7 +50,6 @@ def get_department_totals(donor, department, month, year):
         AND (dbo.Branch_Master.Branch_Name = ?)"""
 
     cursor.execute(query, (month, year, department, donor))
-
     return cursor.fetchall()
 
 
@@ -55,7 +63,6 @@ def get_gratuity_totals(month, year):
     """
 
     cursor.execute(query, (month, year))
-
     return cursor.fetchall()
 
 
@@ -69,12 +76,16 @@ def get_advace_totals(donor, department, month, year):
     """
 
     cursor.execute(query, (donor, department, month, year))
-
     return cursor.fetchall()
 
 
 def get_transaction_years():
-    query = "select To_Date FROM Company_Transaction" ""
+    query = "select To_Date FROM Company_Transaction"""
     cursor.execute(query)
+    return cursor.fetchall()
 
+
+def get_employees():
+    query = "SELECT Emp_Name FROM Emp_Master WHERE Is_Left = 'N'"""
+    cursor.execute(query)
     return cursor.fetchall()

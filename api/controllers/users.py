@@ -4,10 +4,6 @@ import jwt
 from flask import jsonify, abort, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from api.models.user import User
-from dotenv import load_dotenv
-
-
-load_dotenv()
 
 
 def user_module(app):
@@ -71,7 +67,7 @@ def user_module(app):
 
         if not error:
             token = jwt.encode(
-                {"id": user.id}, os.getenv("SECRET"), algorithm="HS256"
+                {"id": user.id}, os.environ.get("SECRET"), algorithm="HS256"
             )
 
             return (
@@ -99,7 +95,7 @@ def user_module(app):
 
         if check_password_hash(user.password, password):
             token = jwt.encode(
-                {"id": user.id}, os.getenv("SECRET"), algorithm="HS256"
+                {"id": user.id}, os.environ.get("SECRET"), algorithm="HS256"
             )
 
             return (

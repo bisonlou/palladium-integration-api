@@ -2,15 +2,12 @@ import os
 import json
 import unittest
 from flask import Flask
-from dotenv import load_dotenv
 from api.controllers.users import user_module
 from api.database import create_db, db
 from api.models.user import User
 
-load_dotenv()
-
 test_app = Flask(__name__)
-database_path = os.getenv("TEST_POSTGRES_DATABASE_URL")
+database_path = os.environ.get("TEST_POSTGRES_DATABASE_URL")
 create_db(test_app, database_path)
 
 user_module(test_app)

@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+    api:
+        build: .
+        image: api:latest
+        container_name: api
+        env_file: .env
+        ports:
+            - "8080:8080"
+        depends_on:
+            - "db" 
+        restart: on-failure
+                    
+    db:
+        image: postgres:latest
+        env_file: .db_env
+        container_name: postgres
+        ports: 
+            - "5432:5432"
+        volumes:
+            - /opt/data:/var/lib/postgresql/data
+   

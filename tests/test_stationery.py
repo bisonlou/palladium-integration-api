@@ -2,16 +2,13 @@ import os
 import json
 import unittest
 from flask import Flask
-from dotenv import load_dotenv
 from api.database import create_db, db
 from api.models.user import User
 from api.controllers.stationery import stationery_module
 from api.models.stationery import Stationery
 
-load_dotenv()
-
 test_app = Flask(__name__)
-database_path = os.getenv("TEST_POSTGRES_DATABASE_URL")
+database_path = os.environ.get("TEST_POSTGRES_DATABASE_URL")
 create_db(test_app, database_path)
 
 stationery_module(test_app)

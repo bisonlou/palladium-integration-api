@@ -82,6 +82,8 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
+.pgadmin_env
+.db_env
 .env
 .venv
 env/
