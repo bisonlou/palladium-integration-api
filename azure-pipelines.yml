@@ -10,8 +10,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: pip install --trusted-host pypi.org -r requirements.txt
-  displayName: 'Installing requirements'
+- script: Docker build -t api .
+  displayName: 'Creating docker image'
 
-- script: python app.py
-  displayName: 'Starting application'
+- script: Docker run -p 8080:8080 -h 0.0.0.0 env_file=.env api
+  displayName: 'Running docker image'
