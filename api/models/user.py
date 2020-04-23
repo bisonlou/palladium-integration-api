@@ -10,7 +10,7 @@ class User(db.Model):
     middle_name = db.Column(db.String, nullable=True)
     last_name = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
-    requisitions = db.relationship("StationeryRequisition", backref="user")
+    requisitions = db.relationship("StationeryRequisition", backref="user", cascade="all, delete-orphan",)
 
     def format_long(self):
         return {
@@ -26,3 +26,9 @@ class User(db.Model):
         db.session.commit()
 
         return self
+
+    def delete(self):
+        db.session.remove(self)
+        db.session.commit()
+
+        return self.id

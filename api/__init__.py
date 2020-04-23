@@ -18,8 +18,10 @@ from api.controllers.stationery_requisition import (
     stationery_requisition_module,
 )
 from api.controllers.projects import project_module
+from api.controllers.health import health_check
 # from api.controllers.employees import employee_module
 
+health_check(app)
 user_module(app)
 errorhandler(app)
 # journal_module(app)

@@ -110,3 +110,34 @@ def user_module(app):
             )
 
         abort(401)
+
+    @app.route("/users", methods=["DELETE"])
+    def delete():
+        email = request.json.get("email", None)
+
+        user = User.query.filter(User.email == email).first()
+
+        if user is None:
+            abort(404)
+
+        error = False
+        deleted_user_id = 0
+        try:
+            deleted_user_id = user.delete()
+        except Exception:
+            error = True
+            print(sys.exc_info())
+
+        if not error:
+            return (
+                jsonify(
+                    {
+                        "success": True,
+                        "user_id": deleted_user_id,
+                        "message": "user succesfully deleted",
+                    }
+                ),
+                200,
+            )
+
+        abort(422)

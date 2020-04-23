@@ -2,13 +2,29 @@ version: "3.7"
 services:
     api:
         build: .
-        image: api:latest
+        image: bisonlou/eprc-portal-api
         container_name: api
         env_file: .env
         ports:
             - "8080:8080"
         depends_on:
             - "db" 
+        restart: on-failure
+        healthcheck:
+            test: "curl localhost:8080/health || exit 1"
+            interval: 10s
+            timeout: 2s
+            retries: 5
+            start_period: 15s
+
+    web:
+        image: web:latest
+        container_name: web
+        ports:
+            - "3000:3000"
+        depends_on:
+            - "api"
+            - "db"
         restart: on-failure
                     
     db:
@@ -18,5 +34,7 @@ services:
         ports: 
             - "5432:5432"
         volumes:
-            - /opt/data:/var/lib/postgresql/data
+            - /postgres-data:/var/lib/postgresql/data
+
+
    

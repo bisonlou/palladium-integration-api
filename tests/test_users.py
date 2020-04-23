@@ -89,3 +89,31 @@ class UserTestCase(unittest.TestCase):
         )
 
         self.assertEqual(response.status_code, 401)
+
+    def test_user_deletion(self):
+        body = {
+            "email": "test@gmail.com",
+            "first_name": "test",
+            "last_name": "test",
+            "middle_name": "",
+            "password": "password",
+        }
+
+        self.client.post(
+            "/users",
+            data=json.dumps(body),
+            content_type='application/json',
+        )
+
+        body = {
+            "email": "test@gmail.com"
+        }
+
+        response = self.client.delete(
+            "/users",
+            data=json.dumps(body),
+            content_type='application/json',
+        )
+
+        self.assertEqual(response.status_code, 200)
+
