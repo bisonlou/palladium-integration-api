@@ -10,7 +10,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: pip install -r requirements.txt
+- script: pip install --trusted-host pypi.org -r requirements.txt
   displayName: 'Installing requirements'
 
 - script: python app.py
