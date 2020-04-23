@@ -10,8 +10,30 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: Docker build -t api .
-  displayName: 'Creating docker image'
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.7.6'
+    addToPath: true
+    architecture: 'x64'
 
-- script: Docker run -p 8080:8080 -h 0.0.0.0 env_file=.env api
-  displayName: 'Running docker image'
+- script: |
+         python -m venv venv
+         source venv/bin/activate
+         python -m pip install --upgrade pip
+         pip install -r requirements.txt
+  workingDirectory: $(projectRoot)
+  displayName: "Install requirements"
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
