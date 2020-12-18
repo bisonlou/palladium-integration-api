@@ -8,7 +8,7 @@ app = Flask(__name__)
 CORS(app)
 
 database_path = os.environ.get("POSTGRES_DATABASE_URL")
-print(database_uri)
+print(database_path)
 create_db(app, database_path)
 
 from api.controllers.users import user_module
