@@ -77,7 +77,7 @@ def journal_module(app):
 
                 # GOU Research NET
                 net_file.write("92000000," + str(-GOUR[0][0]) + "\n")
-                net_file.write("20000005," + str(GOUR[0][0]))
+                net_file.write("20000005," + str(GOUR[0][0])  + "\n")
 
                 # EPRC Support NET
                 net_file.write("92000000," + str(-EPRCS[0][0]) + "\n")
@@ -99,7 +99,7 @@ def journal_module(app):
 
                 # GOU Research PAYE
                 paye_file.write("93000001," + str(-GOUR[0][3]) + "\n")
-                paye_file.write("20000005," + str(GOUR[0][3]))
+                paye_file.write("20000005," + str(GOUR[0][3])  + "\n")
 
 
                 # EPRC Support PAYE
@@ -163,7 +163,7 @@ def journal_module(app):
 
                 # GOU Research LST
                 lst_file.write("93000003," + str(-GOUR[0][4]) + "\n")
-                lst_file.write("20000005," + str(GOUR[0][4]))
+                lst_file.write("20000005," + str(GOUR[0][4])  + "\n")
 
 
                 ########################  EPRC  #############################
