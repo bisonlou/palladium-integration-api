@@ -4,8 +4,8 @@ import pyodbc
 import subprocess
 
 try:
-    s = subprocess.Popen('find / -name *odbc.so -type f', stdout=subprocess.PIPE, shell=True).communicate()
-    f, _ = s
+    # s = subprocess.Popen('find / -name *odbc.so -type f', stdout=subprocess.PIPE, shell=True).communicate()
+    # f, _ = s
 
     # You can change this particular loop to select whatever driver you prefer
     print(f.decode().split())
