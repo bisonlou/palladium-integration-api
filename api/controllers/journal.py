@@ -130,7 +130,7 @@ def journal_module(app):
 
                 # GOU Research NSSF 5%
                 nssf_file.write("93000002," + str(-GOUR[0][2]) + "\n")
-                nssf_file.write("20000005," + str(GOUR[0][2]))
+                nssf_file.write("20000005," + str(GOUR[0][2]) + "\n")
 
 
 
