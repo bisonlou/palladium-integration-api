@@ -8,7 +8,7 @@ try:
     # f, _ = s
 
     # You can change this particular loop to select whatever driver you prefer
-    print(f.decode().split())
+    # print(f.decode().split())
     
     username = os.environ.get("USERNAME")
     server = os.environ.get("SERVER")
