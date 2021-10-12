@@ -118,37 +118,37 @@ def journal_module(app):
                 ########################  GOU  #############################
                 # GOU Support NSSF 10%
                 nssf_file.write("93000002," + str(-GOUS[0][1]) + "\n")
-                nssf_file.write("24000007," + str(GOUS[0][1]) + "\n")
+                nssf_file.write("24000007," + str(GOUS[0][2]) + "\n")
 
                 # GOU Support NSSF 5%
                 nssf_file.write("93000002," + str(-GOUS[0][2]) + "\n")
-                nssf_file.write("24000005," + str(GOUS[0][2]) + "\n")
+                nssf_file.write("24000005," + str(GOUS[0][1]) + "\n")
 
                 # GOU Research NSSF 10%
                 nssf_file.write("93000002," + str(-GOUR[0][1]) + "\n")
-                nssf_file.write("20000007," + str(GOUR[0][1]) + "\n")
+                nssf_file.write("20000007," + str(GOUR[0][2]) + "\n")
 
                 # GOU Research NSSF 5%
                 nssf_file.write("93000002," + str(-GOUR[0][2]) + "\n")
-                nssf_file.write("20000005," + str(GOUR[0][2]) + "\n")
+                nssf_file.write("20000005," + str(GOUR[0][1]) + "\n")
 
 
 
                 ########################  EPRC  #############################
                 # EPRC Support NSSF 10%
-                nssf_file.write("93000002," + str(-EPRCS[0][2]) + "\n")
+                nssf_file.write("93000002," + str(-EPRCS[0][1]) + "\n")
                 nssf_file.write("24000007," + str(EPRCS[0][2]) + "\n")
 
                 # EPRC Support NSSF 5%
-                nssf_file.write("93000002," + str(-EPRCS[0][1]) + "\n")
+                nssf_file.write("93000002," + str(-EPRCS[0][2]) + "\n")
                 nssf_file.write("24000005," + str(EPRCS[0][1]) + "\n")
 
                 # EPRC Research NSSF 10%
-                nssf_file.write("93000002," + str(-EPRCR[0][2]) + "\n")
+                nssf_file.write("93000002," + str(-EPRCR[0][1]) + "\n")
                 nssf_file.write("20000007," + str(EPRCR[0][2]) + "\n")
 
                 # EPRC Research NSSF 5%
-                nssf_file.write("93000002," + str(-EPRCR[0][1]) + "\n")
+                nssf_file.write("93000002," + str(-EPRCR[0][2]) + "\n")
                 nssf_file.write("20000005," + str(EPRCR[0][1]))
 
             with open(os.path.join(path, "LST.txt"), "w") as lst_file:
