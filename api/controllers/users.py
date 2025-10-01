@@ -136,7 +136,7 @@ def user_module(app):
             full_email = email
         
         # Check if user exists with this email
-        user = User.query.filter(User.email == full_email).first()
+        user = User.query.filter(User.email == email).first()
         
         if user is None:
             # For security, don't reveal that the email doesn't exist
@@ -171,7 +171,8 @@ def user_module(app):
             # Send password reset email
             user_name = f"{user.first_name} {user.last_name}".strip()
             email_sent = email_service.send_password_reset_email(
-                to_email=user.email,
+                # append the @eprcug.org suffix if not present
+                to_email=user.email if "@" in user.email else f"{user.email}@eprcug.org",
                 reset_token=reset_token,
                 user_name=user_name if user_name else None
             )
