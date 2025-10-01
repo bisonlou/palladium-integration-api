@@ -4,6 +4,9 @@ import jwt
 from flask import jsonify, abort, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from api.models.user import User
+from api.models.password_reset_token import PasswordResetToken
+from api.utils.email_service import email_service
+from api.utils.token_utils import generate_reset_token_with_timestamp, is_token_format_valid
 
 
 def user_module(app):
@@ -110,6 +113,206 @@ def user_module(app):
             )
 
         abort(401)
+
+    @app.route("/forgot-password", methods=["POST"])
+    def forgot_password():
+        email = request.json.get("email", None)
+        
+        if not email:
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "description": "Email is required",
+                    }
+                ),
+                400,
+            )
+        
+        # Add @eprcug.org suffix if not already present
+        if "@" not in email:
+            full_email = f"{email}@eprcug.org"
+        else:
+            full_email = email
+        
+        # Check if user exists with this email
+        user = User.query.filter(User.email == full_email).first()
+        
+        if user is None:
+            # For security, don't reveal that the email doesn't exist
+            # Return success anyway to prevent email enumeration attacks
+            return (
+                jsonify(
+                    {
+                        "success": True,
+                        "description": "If an account with that email exists, password reset instructions have been sent",
+                    }
+                ),
+                200,
+            )
+        
+        try:
+            # Clean up any existing tokens for this user
+            existing_tokens = PasswordResetToken.query.filter_by(user_id=user.id).all()
+            for token in existing_tokens:
+                token.delete()
+            
+            # Generate a new secure token
+            reset_token, expires_at = generate_reset_token_with_timestamp()
+            
+            # Save token to database
+            password_reset_token = PasswordResetToken(
+                user_id=user.id,
+                token=reset_token,
+                expires_at=expires_at
+            )
+            password_reset_token.add()
+            
+            # Send password reset email
+            user_name = f"{user.first_name} {user.last_name}".strip()
+            email_sent = email_service.send_password_reset_email(
+                to_email=user.email,
+                reset_token=reset_token,
+                user_name=user_name if user_name else None
+            )
+            
+            if not email_sent:
+                # Log the error but don't expose it to the user
+                print(f"Failed to send password reset email to {user.email}")
+            
+            return (
+                jsonify(
+                    {
+                        "success": True,
+                        "description": "If an account with that email exists, password reset instructions have been sent",
+                    }
+                ),
+                200,
+            )
+            
+        except Exception as e:
+            print(f"Error in forgot_password: {str(e)}")
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "description": "An error occurred while processing your request. Please try again later.",
+                    }
+                ),
+                500,
+            )
+
+    @app.route("/reset-password", methods=["POST"])
+    def reset_password():
+        token = request.json.get("token", None)
+        new_password = request.json.get("new_password", None)
+        
+        if not token or not new_password:
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "description": "Token and new password are required",
+                    }
+                ),
+                400,
+            )
+        
+        # Validate token format
+        if not is_token_format_valid(token):
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "description": "Invalid token format",
+                    }
+                ),
+                400,
+            )
+        
+        # Validate password strength (basic validation)
+        if len(new_password) < 8:
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "description": "Password must be at least 8 characters long",
+                    }
+                ),
+                400,
+            )
+        
+        try:
+            # Find and validate the reset token
+            reset_token = PasswordResetToken.find_valid_token(token)
+            
+            if not reset_token:
+                return (
+                    jsonify(
+                        {
+                            "success": False,
+                            "description": "Invalid or expired token",
+                        }
+                    ),
+                    400,
+                )
+            
+            # Get the user
+            user = User.query.get(reset_token.user_id)
+            if not user:
+                return (
+                    jsonify(
+                        {
+                            "success": False,
+                            "description": "User not found",
+                        }
+                    ),
+                    404,
+                )
+            
+            # Update user's password
+            hashed_password = generate_password_hash(new_password, method="sha256")
+            user.password = hashed_password
+            
+            # Mark token as used
+            reset_token.mark_as_used()
+            
+            # Clean up any other tokens for this user
+            other_tokens = PasswordResetToken.query.filter(
+                PasswordResetToken.user_id == user.id,
+                PasswordResetToken.id != reset_token.id
+            ).all()
+            
+            for other_token in other_tokens:
+                other_token.delete()
+            
+            # Commit the password change
+            from api.database import db
+            db.session.commit()
+            
+            return (
+                jsonify(
+                    {
+                        "success": True,
+                        "description": "Password has been successfully reset",
+                    }
+                ),
+                200,
+            )
+            
+        except Exception as e:
+            print(f"Error in reset_password: {str(e)}")
+            from api.database import db
+            db.session.rollback()
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "description": "An error occurred while resetting your password. Please try again later.",
+                    }
+                ),
+                500,
+            )
 
     @app.route("/users", methods=["DELETE"])
     def delete():
