@@ -8,6 +8,7 @@ db = SQLAlchemy()
 import api.models.user
 import api.models.stationery
 import api.models.project
+import api.models.password_reset_token
 
 
 def create_db(app, database_uri):
